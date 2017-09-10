@@ -5,16 +5,24 @@ from scrapy.selector import HtmlXPathSelector
 from scrapperlist.items import ScrapperlistItem
 from scrapy.http import Request
 
-
-
 class HeartrateSpider(scrapy.Spider):
-    name = 'heartrate'
-    allowed_domains = ['liveyoursport.com']
-    start_urls = ['https://www.liveyoursport.com/fitness-technology/']
+	name = 'heartrate'
+	allowed_domains = ['liveyoursport.com']
+	start_urls = [
+        'https://www.liveyoursport.com/heart-rate-monitors-1/',
+    ]
+    
+	def parse(self, response):
 
-    def parse(self, response):
-    	#print (response)
-		product_name = response.xpath("//a[@class='pname']/text()").extract()
-		print (product_name)
-		#for title in product_name:
-		#	yield {'Product Name' : title}
+		for heartrate in response.css("div.ProductDetails"):
+			product_name = heartrate.css("a::text").extract(),
+			price = heartrate.css("em::text").extract(),
+			product_url = heartrate.css("a::attr(href)").extract(),
+			for item in zip(product_name,price,product_url):
+				scrap_info = {
+				'product_name':item[0],
+				'price' : item[1],
+				'product_url' : item[2],
+				}
+
+			yield scrap_info

@@ -10,8 +10,5 @@ import scrapy
 
 class ScrapperlistItem(scrapy.Item):
     # define the fields for your item here like:
-    product_name = scrapy.Field()
-    #price 		=  scrapy.Field()
-    #description = scrapy.Field()
-    #url = scrapy.Filed()
+    pass
     
