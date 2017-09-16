@@ -9,8 +9,7 @@ class HeartrateSpider(scrapy.Spider):
 	name = 'heartrate'
 	allowed_domains = ['liveyoursport.com']
 	start_urls = [
-        'https://www.liveyoursport.com/heart-rate-monitors-1/',
-    ]
+        'https://www.liveyoursport.com/heart-rate-monitors-1/']
     
 	def parse(self, response):
 
@@ -26,3 +25,7 @@ class HeartrateSpider(scrapy.Spider):
 				}
 
 			yield scrap_info
+
+		next_page_url = response.css('div.FloatLeft > a::attr(href)').extract_first()
+		if next_page_url :
+			yield scrapy.Request(url = next_page_url ,callback = self.parse)
